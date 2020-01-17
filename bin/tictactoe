@@ -1,0 +1,81 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment'
+
+input = ""
+
+def reference_board
+  puts
+  puts "1 | 2 | 3"
+  puts "-----------"
+  puts "4 | 5 | 6"
+  puts "-----------"
+  puts "7 | 8 | 9"
+  puts "Use the board above as reference"
+  puts
+end
+
+def start
+  puts
+  puts "Welcome to Tic-Tac-Toe CLI!"
+  puts
+  puts "Type exit to exit the program"
+  puts 
+  puts "Please choose player mode:
+  1- Computer vs Computer
+  2- Player 1 vs Computer
+  3- Player 1 vs Player 2"
+
+  mode = gets.strip
+
+  if mode.to_i == 1
+    Game.new(Players::Computer.new("X"), Players::Computer.new("O"), Board.new).play
+
+  elsif mode.to_i == 2
+    puts
+    puts "Choose who goes first:
+    1- Player 1
+    2- Computer"
+
+    user_input = gets.strip
+
+    if user_input.to_i == 1
+      reference_board
+      Game.new(Players::Human.new("X"), Players::Computer.new("O"), Board.new).play
+    elsif user_input.to_i == 2
+      reference_board
+      Game.new(Players::Computer.new("X"), Players::Human.new("O"), Board.new).play
+    elsif user_input == "reset"
+      start
+    else
+      puts "Invalid Input"
+      start
+    end
+
+  elsif mode.to_i == 3
+    reference_board
+    Game.new(Players::Human.new("X"), Players::Human.new("O"), Board.new).play
+
+  elsif mode.downcase == "reset"
+    start
+
+  elsif mode.downcase == "exit"
+    goodbye
+
+  else
+    puts "Invalid Input"
+    start
+  end
+end
+
+def goodbye
+  puts "Thanks for playing Tic Tac Toe! Goodbye!"
+  exit
+end
+
+until input == "n"
+  start
+  puts
+  puts "Would you like to play again? [y/n]"
+  input = gets.strip
+end
